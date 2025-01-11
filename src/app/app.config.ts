@@ -4,8 +4,16 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideStore } from '@ngrx/store';
+import { cartReducer } from '../store/product.reducer';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
-  provideHttpClient(), provideRouter(routes), provideAnimations(), provideAnimationsAsync()]
+  providers: [
+    provideStore({ cart: cartReducer }),
+    // provideState({ name: 'cart', reducer: cartReducer }),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(),
+    provideRouter(routes),
+    provideAnimations(),
+    provideAnimationsAsync()],
 };

@@ -1,11 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AppState, IProduct } from '../../shared/models/product.model';
+import { Store } from '@ngrx/store';
+import { selectCartProducts, selectCartTotal } from '../../store/product.selector';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { decrementProduct, incrementProduct, removeProduct } from '../../store/product.action';
 
 @Component({
   selector: 'app-cart',
-  imports: [],
+  imports: [CommonModule, RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
+  cartProducts$ !: Observable<IProduct[]>
+  cartTotalPrice$ !: Observable<number>
 
+  constructor(private store: Store<AppState>) { }
+
+  ngOnInit(): void {
+    this.cartProducts$ = this.store.select(selectCartProducts)
+    this.cartTotalPrice$ = this.store.select(selectCartTotal)
+  }
+
+  increment(productId: number): void {
+    this.store.dispatch(incrementProduct({ productId }))
+  }
+
+  decrement(productId: number): void {
+    this.store.dispatch(decrementProduct({ productId }))
+  }
+
+  removeProduct(productId: number): void {
+    this.store.dispatch(removeProduct({ productId }))
+  }
 }

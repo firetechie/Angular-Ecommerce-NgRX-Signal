@@ -13,3 +13,12 @@ export interface Rating {
     rate: number
     count: number
 }
+
+export interface AppState {
+    cart: CartState
+}
+
+export interface CartState {
+    products: IProduct[];
+    totalPrice: number;
+}

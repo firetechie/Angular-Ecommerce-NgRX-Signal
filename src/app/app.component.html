@@ -7,7 +7,9 @@
                     NGRX <span style="color: red;">SIGNAL</span> STORE</div>
                 <div>
                     <button routerLink="/cart" class="dark:text-gray-300 hover:underline">Cart
-                        <span></span></button>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>{{(this.cartProducts$ | async)?.length}}</span>
+                    </button>
                 </div>
             </div>
         </div>

@@ -1,13 +1,39 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { IProduct } from '../models/product.model';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit, OnDestroy {
   @Input() product!: IProduct;
+  @Input() cartProducts$!: Observable<IProduct[]>;
+  @Output() handleCart: EventEmitter<any> = new EventEmitter<any>();
+  existingCartProduct !: boolean;
+  cartProductsSubscription !: any;
+
+  constructor(private router: Router) { }
+
+  ngOnInit(): void {
+    this.cartProductsSubscription =
+      this.cartProducts$.subscribe((products) => {
+        this.existingCartProduct = products.some((p) => this.product.id === p.id)
+      })
+  }
+
+  addToCart(product: IProduct): void {
+    this.handleCart.emit(product);
+    setTimeout(() => {
+      this.router.navigate(['/cart']);
+    }, 500);
+  }
+
+  ngOnDestroy(): void {
+    this.cartProductsSubscription?.unsubscribe();
+  }
 }

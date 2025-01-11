@@ -1,13 +1,14 @@
 import { createReducer, on } from "@ngrx/store";
-import { IProduct } from "../shared/models/product.model";
+import { CartState, IProduct } from "../shared/models/product.model";
 import * as ProductActions from "./product.action"
 
-export interface CartState {
-    products: IProduct[];
+export const cartInitialState: CartState = {
+    products: [],
+    totalPrice: 0
 }
 
-export const cartInitialState: CartState = {
-    products: []
+export const calculateCartTotalPrice = (products: IProduct[]) => {
+    return products.reduce((total, product) => total + (product.price * product.quantity), 0)
 }
 
 export const cartReducer = createReducer(cartInitialState,
@@ -15,28 +16,32 @@ export const cartReducer = createReducer(cartInitialState,
         const updatedProducts = [...state.products, product]
         return {
             ...state,
-            products: updatedProducts
+            products: updatedProducts,
+            totalPrice: calculateCartTotalPrice(updatedProducts)
         }
     }),
     on(ProductActions.incrementProduct, (state, { productId }) => {
         const updatedProducts = state.products.map((product) => product.id === productId ? { ...product, quantity: product.quantity + 1 } : product)
         return {
             ...state,
-            products: updatedProducts
+            products: updatedProducts,
+            totalPrice: calculateCartTotalPrice(updatedProducts)
         }
     }),
     on(ProductActions.decrementProduct, (state, { productId }) => {
         const updatedProducts = state.products.map((product) => product.id === productId ? { ...product, quantity: product.quantity - 1 } : product)
         return {
             ...state,
-            products: updatedProducts
+            products: updatedProducts,
+            totalPrice: calculateCartTotalPrice(updatedProducts)
         }
     }),
     on(ProductActions.removeProduct, (state, { productId }) => {
         const updatedProducts = state.products.filter((product) => product.id !== productId)
         return {
             ...state,
-            products: updatedProducts
+            products: updatedProducts,
+            totalPrice: calculateCartTotalPrice(updatedProducts)
         }
     }),
 )

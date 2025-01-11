@@ -3,8 +3,7 @@
     <h1 class="text-4xl dark:text-white">Something went wrong while loading products</h1>
     }@else {
     @for (product of products$ | async; track $index) {
-    <app-product-card [product]="product" />
+    <app-product-card [product]="product" [cartProducts$]="cartProducts$" (handleCart)="addItemToCart($event)" />
     }
     }
-
 </div>
