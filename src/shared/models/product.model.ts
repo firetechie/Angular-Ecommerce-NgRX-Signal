@@ -16,9 +16,15 @@ export interface Rating {
 
 export interface AppState {
     cart: CartState
+    product: ProductState
 }
 
 export interface CartState {
     products: IProduct[];
     totalPrice: number;
+}
+
+export interface ProductState {
+    products: IProduct[];
+    error: string | null;
 }

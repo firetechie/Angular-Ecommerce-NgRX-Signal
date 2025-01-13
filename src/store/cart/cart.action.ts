@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store'
-import { IProduct } from '../shared/models/product.model'
+import { IProduct } from '../../shared/models/product.model';
 
 export const addToCart = createAction('[Cart Component] AddCart', props<{ product: IProduct }>());
 export const incrementProduct = createAction('[Cart Component] IncrementProduct', props<{ productId: number }>());

@@ -6,8 +6,10 @@ import { ProductCardComponent } from '../../shared/product-card/product-card.com
 import { AppState, IProduct } from '../../shared/models/product.model';
 import { ProductsService } from '../../services/products.service';
 import { Store } from '@ngrx/store';
-import { addToCart } from '../../store/product.action';
-import { selectCartProducts } from '../../store/product.selector';
+import { selectCartProducts } from '../../store/cart/cart.selector';
+import { addToCart } from '../../store/cart/cart.action';
+import * as ProductActions from '../../../src/store/product/product.action'
+import * as ProductSelectors from '../../../src/store/product/product.selector'
 
 @Component({
   selector: 'app-products',
@@ -17,7 +19,7 @@ import { selectCartProducts } from '../../store/product.selector';
 })
 export class ProductsComponent implements OnInit {
   http: any;
-  error !: any;
+  error$ !: Observable<string | null>;
   products$!: Observable<IProduct[]>
   productService: ProductsService;
   cartProducts$ !: Observable<IProduct[]>;
@@ -28,7 +30,9 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products$ = this.productService.getProducts() as Observable<IProduct[]>;
+    this.store.dispatch(ProductActions.loadProducts())
+    this.products$ = this.store.select(ProductSelectors.selectAllProducts)
+    this.error$ = this.store.select(ProductSelectors.selectProductError)
     this.cartProducts$ = this.store.select(selectCartProducts)
   }
 

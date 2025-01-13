@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppState, IProduct } from '../../shared/models/product.model';
 import { Store } from '@ngrx/store';
-import { selectCartProducts, selectCartTotal } from '../../store/product.selector';
+import { selectCartProducts, selectCartTotal } from '../../store/cart/cart.selector';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { decrementProduct, incrementProduct, removeProduct } from '../../store/product.action';
+import { incrementProduct, decrementProduct, removeProduct } from '../../store/cart/cart.action';
 
 @Component({
   selector: 'app-cart',

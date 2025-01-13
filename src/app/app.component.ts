@@ -3,7 +3,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState, IProduct } from '../shared/models/product.model';
-import { selectCartProducts } from '../store/product.selector';
+import { selectCartProducts } from '../store/cart/cart.selector';
 import { CommonModule } from '@angular/common';
 
 @Component({
