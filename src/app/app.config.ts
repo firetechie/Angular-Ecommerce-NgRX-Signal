@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideExperimentalZonelessChangeDetection, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
@@ -16,7 +16,8 @@ export const appConfig: ApplicationConfig = {
     // provideState({ name: 'cart', reducer: cartReducer }),
     // provideState({ name: 'product', reducer: productReducer }),
     provideEffects(ProductEffect),
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    // provideZoneChangeDetection({ eventCoalescing: true }),
+    provideExperimentalZonelessChangeDetection(),
     provideHttpClient(),
     provideRouter(routes),
     provideAnimations(),
