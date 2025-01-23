@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, inject, linkedSignal, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppState, IProduct } from '../../shared/models/product.model';
 import { Store } from '@ngrx/store';
-import { selectCartProducts, selectCartTotal } from '../../store/cart/cart.selector';
+import { selectCartProducts, selectCartTotal } from '../../ngrx-store/cart/cart.selector';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { incrementProduct, decrementProduct, removeProduct } from '../../store/cart/cart.action';
+import { incrementProduct, decrementProduct, removeProduct } from '../../ngrx-store/cart/cart.action';
+import { CartStore } from '../../signal-store/cart.store';
 
 @Component({
   selector: 'app-cart',
@@ -16,6 +17,15 @@ import { incrementProduct, decrementProduct, removeProduct } from '../../store/c
 export class CartComponent implements OnInit {
   cartProducts$ !: Observable<IProduct[]>
   cartTotalPrice$ !: Observable<number>
+
+  // ngrx signals() store
+  cartStore = inject(CartStore)
+  deliveryCharges = computed<number>(() => {
+    return this.cartStore.totalPrice() > 100 ? 29 : 0
+  })
+  totalCartPrice = linkedSignal<number>(() => {
+    return this.cartStore.totalPrice() + this.deliveryCharges();
+  })
 
   constructor(private store: Store<AppState>) { }
 

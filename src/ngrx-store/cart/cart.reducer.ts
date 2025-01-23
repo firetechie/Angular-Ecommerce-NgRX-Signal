@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { CartState, IProduct } from "../../shared/models/product.model";
-import * as ProductActions from "./cart.action"
+import * as ProductActions from "./cart.action";
 
 export const cartInitialState: CartState = {
     products: [],

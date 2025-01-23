@@ -6,9 +6,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { cartReducer } from '../store/cart/cart.reducer';
-import { productReducer } from '../store/product/product.reducer';
-import { ProductEffect } from '../store/product/product.effects';
+import { cartReducer } from '../ngrx-store/cart/cart.reducer';
+import { productReducer } from '../ngrx-store/product/product.reducer';
+import { ProductEffect } from '../ngrx-store/product/product.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [

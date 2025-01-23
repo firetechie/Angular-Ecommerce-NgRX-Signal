@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { IProduct } from '../models/product.model';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
+import { CartStore } from '../../signal-store/cart.store';
 
 @Component({
   selector: 'app-product-card',
@@ -16,6 +17,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   @Output() handleCart: EventEmitter<any> = new EventEmitter<any>();
   existingCartProduct !: boolean;
   cartProductsSubscription !: any;
+  cartStore = inject(CartStore)
 
   constructor(private router: Router) { }
 

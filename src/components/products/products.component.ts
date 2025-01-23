@@ -6,10 +6,11 @@ import { ProductCardComponent } from '../../shared/product-card/product-card.com
 import { AppState, IProduct } from '../../shared/models/product.model';
 import { ProductsService } from '../../services/products.service';
 import { Store } from '@ngrx/store';
-import { selectCartProducts } from '../../store/cart/cart.selector';
-import { addToCart } from '../../store/cart/cart.action';
-import * as ProductActions from '../../../src/store/product/product.action'
-import * as ProductSelectors from '../../../src/store/product/product.selector'
+import { selectCartProducts } from '../../ngrx-store/cart/cart.selector';
+import { addToCart } from '../../ngrx-store/cart/cart.action';
+import * as ProductActions from '../../../src/ngrx-store/product/product.action'
+import * as ProductSelectors from '../../../src/ngrx-store/product/product.selector'
+import { CartStore } from '../../signal-store/cart.store';
 
 @Component({
   selector: 'app-products',
@@ -23,6 +24,7 @@ export class ProductsComponent implements OnInit {
   products$!: Observable<IProduct[]>
   productService: ProductsService;
   cartProducts$ !: Observable<IProduct[]>;
+  cartStore = inject(CartStore)
 
   constructor(private store: Store<AppState>) {
     this.http = inject(HttpClient)
@@ -37,6 +39,7 @@ export class ProductsComponent implements OnInit {
   }
 
   addItemToCart(product: IProduct): void {
-    this.store.dispatch(addToCart({ product }))
+    // this.store.dispatch(addToCart({ product }))
+    this.cartStore.addToCart(product);
   }
 }

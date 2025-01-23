@@ -1,4 +1,4 @@
-@if ((cartProducts$ | async)?.length === 0) {
+@if (cartStore.products().length === 0) {
 <div
     class="mx-auto bg-white rounded-md flex max-w-3xl flex-col items-center justify-center space-y-4 p-6 px-2 sm:p-10 sm:px-2">
     <h2 class="text-3xl font-bold text-center">Your cart is Empty!</h2>
@@ -8,13 +8,12 @@
         Back to shop
     </button>
 </div>
-
 }
 @else {
 <div class="mx-auto bg-white rounded-md flex max-w-3xl flex-col space-y-4 p-6 px-2 sm:p-10 sm:px-2">
     <h2 class="text-3xl font-bold">Your cart</h2>
     <ul class="flex flex-col divide-y divide-gray-200 h-[400px] overflow-y-auto">
-        @for (item of (cartProducts$ | async); track $index) {
+        @for (item of cartStore.products(); track $index) {
         <li class="flex flex-col py-6 sm:flex-row sm:justify-between">
             <div class="flex w-full space-x-2 sm:space-x-4">
                 <img class="h-20 w-20 flex-shrink-0 rounded object-contain outline-none dark:border-transparent sm:h-32 sm:w-32"
@@ -40,7 +39,7 @@
                                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
                             </svg>
-                            <span (click)="removeProduct(item.id)">Remove</span>
+                            <span (click)="cartStore.removeProduct(item.id)">Remove</span>
                         </button>
                         <button type="button" class="flex items-center text-purple-500 space-x-2 px-2 py-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
@@ -54,13 +53,13 @@
                         </button>
                         <!-- Quantity Controls -->
                         <div class="quantity-controls flex items-center pl-4">
-                            <button (click)="decrement(item.id)" [disabled]="item.quantity === 1"
+                            <button (click)="cartStore.decrement(item.id)" [disabled]="item.quantity === 1"
                                 class="decrement-button bg-red-300 text-gray-600 hover:bg-red-400 px-2 py-1 rounded-l">
                                 -
                             </button>
                             <input type="text" readonly class="quantity-input h-7 w-12 text-center border-t border-b"
                                 [value]="item.quantity">
-                            <button (click)="increment(item.id)"
+                            <button (click)="cartStore.increment(item.id)"
                                 class="increment-button bg-green-300 text-gray-600 hover:bg-green-400 px-2 py-1 rounded-r">
                                 +
                             </button>
@@ -73,7 +72,12 @@
     </ul>
     <div class="space-y-1 text-right">
         <p>
-            Total amount: <span class="font-semibold">{{cartTotalPrice$ | async | currency}}</span>
+            Delivery charges: <span class="font-semibold">
+                {{(deliveryCharges() > 0 ? (deliveryCharges() | currency) : 'Free')}}
+            </span>
+        </p>
+        <p>
+            Total amount: <span class="font-semibold">{{totalCartPrice() | currency}}</span>
         </p>
     </div>
     <div class="flex justify-end space-x-4">
@@ -81,7 +85,7 @@
             class="rounded-md border border-purple-500 px-3 py-2 text-sm font-semibold text-purple-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
             Back to shop
         </button>
-        <button type="button"
+        <button routerLink="/checkout" type="button"
             class="rounded-md text-green-500 border border-green-500 px-3 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
             Checkout
         </button>
